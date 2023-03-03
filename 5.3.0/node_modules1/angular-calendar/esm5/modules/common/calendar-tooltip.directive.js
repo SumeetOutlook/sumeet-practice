@@ -1,0 +1,235 @@
+import { __decorate, __metadata, __param, __read, __spread } from "tslib";
+import { Directive, Component, HostListener, OnDestroy, Input, ComponentRef, Injector, ComponentFactoryResolver, ViewContainerRef, ElementRef, ComponentFactory, Inject, Renderer2, TemplateRef, OnChanges, SimpleChanges, } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { positionElements } from 'positioning';
+import { of, Subject, timer } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import * as ɵngcc0 from '@angular/core';
+import * as ɵngcc1 from '@angular/common';
+
+function CalendarTooltipWindowComponent_ng_template_0_Template(rf, ctx) { if (rf & 1) {
+    ɵngcc0.ɵɵelementStart(0, "div", 2);
+    ɵngcc0.ɵɵelement(1, "div", 3);
+    ɵngcc0.ɵɵelement(2, "div", 4);
+    ɵngcc0.ɵɵelementEnd();
+} if (rf & 2) {
+    var contents_r3 = ctx.contents;
+    var placement_r4 = ctx.placement;
+    ɵngcc0.ɵɵproperty("ngClass", "cal-tooltip-" + placement_r4);
+    ɵngcc0.ɵɵadvance(2);
+    ɵngcc0.ɵɵproperty("innerHtml", contents_r3, ɵngcc0.ɵɵsanitizeHtml);
+} }
+function CalendarTooltipWindowComponent_ng_template_2_Template(rf, ctx) { }
+var _c0 = function (a0, a1, a2) { return { contents: a0, placement: a1, event: a2 }; };
+var CalendarTooltipWindowComponent = /** @class */ (function () {
+    function CalendarTooltipWindowComponent() {
+    }
+    __decorate([
+        Input(),
+        __metadata("design:type", String)
+    ], CalendarTooltipWindowComponent.prototype, "contents", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", String)
+    ], CalendarTooltipWindowComponent.prototype, "placement", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], CalendarTooltipWindowComponent.prototype, "event", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", TemplateRef)
+    ], CalendarTooltipWindowComponent.prototype, "customTemplate", void 0);
+CalendarTooltipWindowComponent.ɵfac = function CalendarTooltipWindowComponent_Factory(t) { return new (t || CalendarTooltipWindowComponent)(); };
+CalendarTooltipWindowComponent.ɵcmp = ɵngcc0.ɵɵdefineComponent({ type: CalendarTooltipWindowComponent, selectors: [["mwl-calendar-tooltip-window"]], inputs: { contents: "contents", placement: "placement", event: "event", customTemplate: "customTemplate" }, decls: 3, vars: 6, consts: [["defaultTemplate", ""], [3, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "cal-tooltip", 3, "ngClass"], [1, "cal-tooltip-arrow"], [1, "cal-tooltip-inner", 3, "innerHtml"]], template: function CalendarTooltipWindowComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵtemplate(0, CalendarTooltipWindowComponent_ng_template_0_Template, 3, 2, "ng-template", null, 0, ɵngcc0.ɵɵtemplateRefExtractor);
+        ɵngcc0.ɵɵtemplate(2, CalendarTooltipWindowComponent_ng_template_2_Template, 0, 0, "ng-template", 1);
+    } if (rf & 2) {
+        var _r0 = ɵngcc0.ɵɵreference(1);
+        ɵngcc0.ɵɵadvance(2);
+        ɵngcc0.ɵɵproperty("ngTemplateOutlet", ctx.customTemplate || _r0)("ngTemplateOutletContext", ɵngcc0.ɵɵpureFunction3(2, _c0, ctx.contents, ctx.placement, ctx.event));
+    } }, directives: [ɵngcc1.NgTemplateOutlet, ɵngcc1.NgClass], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(CalendarTooltipWindowComponent, [{
+        type: Component,
+        args: [{
+                selector: 'mwl-calendar-tooltip-window',
+                template: "\n    <ng-template\n      #defaultTemplate\n      let-contents=\"contents\"\n      let-placement=\"placement\"\n      let-event=\"event\"\n    >\n      <div class=\"cal-tooltip\" [ngClass]=\"'cal-tooltip-' + placement\">\n        <div class=\"cal-tooltip-arrow\"></div>\n        <div class=\"cal-tooltip-inner\" [innerHtml]=\"contents\"></div>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        contents: contents,\n        placement: placement,\n        event: event\n      }\"\n    >\n    </ng-template>\n  "
+            }]
+    }], function () { return []; }, { contents: [{
+            type: Input
+        }], placement: [{
+            type: Input
+        }], event: [{
+            type: Input
+        }], customTemplate: [{
+            type: Input
+        }] }); })();
+    return CalendarTooltipWindowComponent;
+}());
+export { CalendarTooltipWindowComponent };
+var CalendarTooltipDirective = /** @class */ (function () {
+    function CalendarTooltipDirective(elementRef, injector, renderer, componentFactoryResolver, viewContainerRef, document //tslint:disable-line
+    ) {
+        this.elementRef = elementRef;
+        this.injector = injector;
+        this.renderer = renderer;
+        this.viewContainerRef = viewContainerRef;
+        this.document = document;
+        this.placement = 'auto'; // tslint:disable-line no-input-rename
+        this.delay = null; // tslint:disable-line no-input-rename
+        this.cancelTooltipDelay$ = new Subject();
+        this.tooltipFactory = componentFactoryResolver.resolveComponentFactory(CalendarTooltipWindowComponent);
+    }
+    CalendarTooltipDirective.prototype.ngOnChanges = function (changes) {
+        if (this.tooltipRef &&
+            (changes.contents || changes.customTemplate || changes.event)) {
+            this.tooltipRef.instance.contents = this.contents;
+            this.tooltipRef.instance.customTemplate = this.customTemplate;
+            this.tooltipRef.instance.event = this.event;
+            this.tooltipRef.changeDetectorRef.markForCheck();
+            if (!this.contents) {
+                this.hide();
+            }
+        }
+    };
+    CalendarTooltipDirective.prototype.ngOnDestroy = function () {
+        this.hide();
+    };
+    CalendarTooltipDirective.prototype.onMouseOver = function () {
+        var _this = this;
+        var delay$ = this.delay === null ? of('now') : timer(this.delay);
+        delay$.pipe(takeUntil(this.cancelTooltipDelay$)).subscribe(function () {
+            _this.show();
+        });
+    };
+    CalendarTooltipDirective.prototype.onMouseOut = function () {
+        this.hide();
+    };
+    CalendarTooltipDirective.prototype.show = function () {
+        var _this = this;
+        if (!this.tooltipRef && this.contents) {
+            this.tooltipRef = this.viewContainerRef.createComponent(this.tooltipFactory, 0, this.injector, []);
+            this.tooltipRef.instance.contents = this.contents;
+            this.tooltipRef.instance.customTemplate = this.customTemplate;
+            this.tooltipRef.instance.event = this.event;
+            if (this.appendToBody) {
+                this.document.body.appendChild(this.tooltipRef.location.nativeElement);
+            }
+            requestAnimationFrame(function () {
+                _this.positionTooltip();
+            });
+        }
+    };
+    CalendarTooltipDirective.prototype.hide = function () {
+        if (this.tooltipRef) {
+            this.viewContainerRef.remove(this.viewContainerRef.indexOf(this.tooltipRef.hostView));
+            this.tooltipRef = null;
+        }
+        this.cancelTooltipDelay$.next();
+    };
+    CalendarTooltipDirective.prototype.positionTooltip = function (previousPositions) {
+        if (previousPositions === void 0) { previousPositions = []; }
+        if (this.tooltipRef) {
+            this.tooltipRef.changeDetectorRef.detectChanges();
+            this.tooltipRef.instance.placement = positionElements(this.elementRef.nativeElement, this.tooltipRef.location.nativeElement.children[0], this.placement, this.appendToBody);
+            // keep re-positioning the tooltip until the arrow position doesn't make a difference
+            if (previousPositions.indexOf(this.tooltipRef.instance.placement) === -1) {
+                this.positionTooltip(__spread(previousPositions, [
+                    this.tooltipRef.instance.placement,
+                ]));
+            }
+        }
+    };
+    CalendarTooltipDirective.ctorParameters = function () { return [
+        { type: ElementRef },
+        { type: Injector },
+        { type: Renderer2 },
+        { type: ComponentFactoryResolver },
+        { type: ViewContainerRef },
+        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+    ]; };
+    __decorate([
+        Input('mwlCalendarTooltip'),
+        __metadata("design:type", String)
+    ], CalendarTooltipDirective.prototype, "contents", void 0);
+    __decorate([
+        Input('tooltipPlacement'),
+        __metadata("design:type", Object)
+    ], CalendarTooltipDirective.prototype, "placement", void 0);
+    __decorate([
+        Input('tooltipTemplate'),
+        __metadata("design:type", TemplateRef)
+    ], CalendarTooltipDirective.prototype, "customTemplate", void 0);
+    __decorate([
+        Input('tooltipEvent'),
+        __metadata("design:type", Object)
+    ], CalendarTooltipDirective.prototype, "event", void 0);
+    __decorate([
+        Input('tooltipAppendToBody'),
+        __metadata("design:type", Boolean)
+    ], CalendarTooltipDirective.prototype, "appendToBody", void 0);
+    __decorate([
+        Input('tooltipDelay'),
+        __metadata("design:type", Number)
+    ], CalendarTooltipDirective.prototype, "delay", void 0);
+    __decorate([
+        HostListener('mouseenter'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], CalendarTooltipDirective.prototype, "onMouseOver", null);
+    __decorate([
+        HostListener('mouseleave'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], CalendarTooltipDirective.prototype, "onMouseOut", null);
+    CalendarTooltipDirective = __decorate([ __param(5, Inject(DOCUMENT)),
+        __metadata("design:paramtypes", [ElementRef,
+            Injector,
+            Renderer2,
+            ComponentFactoryResolver,
+            ViewContainerRef, Object])
+    ], CalendarTooltipDirective);
+CalendarTooltipDirective.ɵfac = function CalendarTooltipDirective_Factory(t) { return new (t || CalendarTooltipDirective)(ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ElementRef), ɵngcc0.ɵɵdirectiveInject(ɵngcc0.Injector), ɵngcc0.ɵɵdirectiveInject(ɵngcc0.Renderer2), ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ComponentFactoryResolver), ɵngcc0.ɵɵdirectiveInject(ɵngcc0.ViewContainerRef), ɵngcc0.ɵɵdirectiveInject(DOCUMENT)); };
+CalendarTooltipDirective.ɵdir = ɵngcc0.ɵɵdefineDirective({ type: CalendarTooltipDirective, selectors: [["", "mwlCalendarTooltip", ""]], hostBindings: function CalendarTooltipDirective_HostBindings(rf, ctx) { if (rf & 1) {
+        ɵngcc0.ɵɵlistener("mouseenter", function CalendarTooltipDirective_mouseenter_HostBindingHandler() { return ctx.onMouseOver(); })("mouseleave", function CalendarTooltipDirective_mouseleave_HostBindingHandler() { return ctx.onMouseOut(); });
+    } }, inputs: { placement: ["tooltipPlacement", "placement"], delay: ["tooltipDelay", "delay"], contents: ["mwlCalendarTooltip", "contents"], customTemplate: ["tooltipTemplate", "customTemplate"], event: ["tooltipEvent", "event"], appendToBody: ["tooltipAppendToBody", "appendToBody"] }, features: [ɵngcc0.ɵɵNgOnChangesFeature] });
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(CalendarTooltipDirective, [{
+        type: Directive,
+        args: [{
+                selector: '[mwlCalendarTooltip]'
+            }]
+    }], function () { return [{ type: ɵngcc0.ElementRef }, { type: ɵngcc0.Injector }, { type: ɵngcc0.Renderer2 }, { type: ɵngcc0.ComponentFactoryResolver }, { type: ɵngcc0.ViewContainerRef }, { type: undefined, decorators: [{
+                type: Inject,
+                args: [DOCUMENT]
+            }] }]; }, { placement: [{
+            type: Input,
+            args: ['tooltipPlacement']
+        }], delay: [{
+            type: Input,
+            args: ['tooltipDelay']
+        }], onMouseOver: [{
+            type: HostListener,
+            args: ['mouseenter']
+        }], onMouseOut: [{
+            type: HostListener,
+            args: ['mouseleave']
+        }], contents: [{
+            type: Input,
+            args: ['mwlCalendarTooltip']
+        }], customTemplate: [{
+            type: Input,
+            args: ['tooltipTemplate']
+        }], event: [{
+            type: Input,
+            args: ['tooltipEvent']
+        }], appendToBody: [{
+            type: Input,
+            args: ['tooltipAppendToBody']
+        }] }); })();
+    return CalendarTooltipDirective;
+}());
+export { CalendarTooltipDirective };
+
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FsZW5kYXItdG9vbHRpcC5kaXJlY3RpdmUuanMiLCJzb3VyY2VzIjpbIm5nOi9hbmd1bGFyLWNhbGVuZGFyL21vZHVsZXMvY29tbW9uL2NhbGVuZGFyLXRvb2x0aXAuZGlyZWN0aXZlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSxPQUFPLEVBQ0wsU0FBUyxFQUNULFNBQVMsRUFDVCxZQUFZLEVBQ1osU0FBUyxFQUNULEtBQUssRUFDTCxZQUFZLEVBQ1osUUFBUSxFQUNSLHdCQUF3QixFQUN4QixnQkFBZ0IsRUFDaEIsVUFBVSxFQUNWLGdCQUFnQixFQUNoQixNQUFNLEVBQ04sU0FBUyxFQUNULFdBQVcsRUFDWCxTQUFTLEVBQ1QsYUFBYSxHQUNkLE1BQU0sZUFBZSxDQUFDO0FBQ3ZCLE9BQU8sRUFBRSxRQUFRLEVBQUUsTUFBTSxpQkFBaUIsQ0FBQztBQUMzQyxPQUFPLEVBQWtCLGdCQUFnQixFQUFFLE1BQU0sYUFBYSxDQUFDO0FBRS9ELE9BQU8sRUFBYyxFQUFFLEVBQUUsT0FBTyxFQUFFLEtBQUssRUFBRSxNQUFNLE1BQU0sQ0FBQztBQUN0RCxPQUFPLEVBQUUsU0FBUyxFQUFFLE1BQU0sZ0JBQWdCLENBQUM7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQTJCM0M7QUFDb0IsSUFEcEI7QUFBNEMsSUFRNUMsQ0FBQztBQUNELElBUlc7QUFBYSxRQUFyQixLQUFLLEVBQUU7QUFBRTtBQUVZLG9FQUZJO0FBRTVCLElBQVc7QUFBYSxRQUFyQixLQUFLLEVBQUU7QUFBRTtBQUVXLHFFQUZNO0FBRTdCLElBQVc7QUFBYSxRQUFyQixLQUFLLEVBQUU7QUFBRTtBQUVRLGlFQUZZO0FBRWhDLElBQVc7QUFBYSxRQUFyQixLQUFLLEVBQUU7QUFBRSxrQ0FBZSxXQUFXO0FBQUUsMEVBQUk7SUFQL0IsOEJBQThCLHdCQXpCMUMsU0FBUyxDQUFDLGNBQ1QsUUFBUSxFQUFFLDZCQUE2QixjQUN2QyxRQUFRLEVBQUU7O3dFQXFCVCxVQUNGLENBQUMsUUFDVyw4QkFBOEIs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QkFBcUIsQ0FBQztBQUFFO0FBQTJDLGtFQUF0QjtBQUFFLElBRS9CO0FBQWEsUUFBbkMsS0FBSyxDQUFDLGNBQWMsQ0FBQztBQUFFO0FBQTBDLDJEQUFmO0FBQUUsSUF3Q3JEO0FBQWEsUUFEWixZQUFZLENBQUMsWUFBWSxDQUFDO0FBQzVCO0FBQ3FCO0FBQ1M7QUFDWCwrREFHakI7QUFFSCxJQUNFO0FBQWEsUUFEWixZQUFZLENBQUMsWUFBWSxDQUFDO0FBQzVCO0FBSUE7QUFDb0I7QUFDRyw4REFKckI7QUFFSCxJQWhFYSx3QkFBd0Isd0JBSHBDLFNBQVMsQ0FBQyxuQkFHSCxDQXVCSCxXQUFBLE1BQU0sQ0FBQyxRQUFRLENBQUMsQ0FBQTtFQXpCbkIsUUFBUSxFQUFFLHNCQUFzQixXQUNqQyxDQUFDLDlDQXdCcUIseUNBTEMsVUFBVTtBQUNsQyxZQUFzQixRQUFRO0FBQzlCLFlBQXNCLFNBQVM7QUFDL0IsWUFBOEIsd0JBQXdCO0FBQ3RELFlBQThCLGdCQUFnQjtBQUNyQyxPQXZCSSx3QkFBd0IsQ0FrSHBDOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O29CQUNEO0FBQUMsSUFERCwrQkFBQztBQUNBLENBREEsQUFsSEQsSUFrSEM7QUFDRCxTQW5IYSx3QkFBd0I7QUFBSSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XG4gIERpcmVjdGl2ZSxcbiAgQ29tcG9uZW50LFxuICBIb3N0TGlzdGVuZXIsXG4gIE9uRGVzdHJveSxcbiAgSW5wdXQsXG4gIENvbXBvbmVudFJlZixcbiAgSW5qZWN0b3IsXG4gIENvbXBvbmVudEZhY3RvcnlSZXNvbHZlcixcbiAgVmlld0NvbnRhaW5lclJlZixcbiAgRWxlbWVudFJlZixcbiAgQ29tcG9uZW50RmFjdG9yeSxcbiAgSW5qZWN0LFxuICBSZW5kZXJlcjIsXG4gIFRlbXBsYXRlUmVmLFxuICBPbkNoYW5nZXMsXG4gIFNpbXBsZUNoYW5nZXMsXG59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgRE9DVU1FTlQgfSBmcm9tICdAYW5ndWxhci9jb21tb24nO1xuaW1wb3J0IHsgUGxhY2VtZW50QXJyYXksIHBvc2l0aW9uRWxlbWVudHMgfSBmcm9tICdwb3NpdGlvbmluZyc7XG5pbXBvcnQgeyBDYWxlbmRhckV2ZW50IH0gZnJvbSAnY2FsZW5kYXItdXRpbHMnO1xuaW1wb3J0IHsgT2JzZXJ2YWJsZSwgb2YsIFN1YmplY3QsIHRpbWVyIH0gZnJvbSAncnhqcyc7XG5pbXBvcnQgeyB0YWtlVW50aWwgfSBmcm9tICdyeGpzL29wZXJhdG9ycyc7XG5cbkBDb21wb25lbnQoe1xuICBzZWxlY3RvcjogJ213bC1jYWxlbmRhci10b29sdGlwLXdpbmRvdycsXG4gIHRlbXBsYXRlOiBgXG4gICAgPG5nLXRlbXBsYXRlXG4gICAgICAjZGVmYXVsdFRlbXBsYXRlXG4gICAgICBsZXQtY29udGVudHM9XCJjb250ZW50c1wiXG4gICAgICBsZXQtcGxhY2VtZW50PVwicGxhY2VtZW50XCJcbiAgICAgIGxldC1ldmVudD1cImV2ZW50XCJcbiAgICA+XG4gICAgICA8ZGl2IGNsYXNzPVwiY2FsLXRvb2x0aXBcIiBbbmdDbGFzc109XCInY2FsLXRvb2x0aXAtJyArIHBsYWNlbWVudFwiPlxuICAgICAgICA8ZGl2IGNsYXNzPVwiY2FsLXRvb2x0aXAtYXJyb3dcIj48L2Rpdj5cbiAgICAgICAgPGRpdiBjbGFzcz1cImNhbC10b29sdGlwLWlubmVyXCIgW2lubmVySHRtbF09XCJjb250ZW50c1wiPjwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgPC9uZy10ZW1wbGF0ZT5cbiAgICA8bmctdGVtcGxhdGVcbiAgICAgIFtuZ1RlbXBsYXRlT3V0bGV0XT1cImN1c3RvbVRlbXBsYXRlIHx8IGRlZmF1bHRUZW1wbGF0ZVwiXG4gICAgICBbbmdUZW1wbGF0ZU91dGxldENvbnRleHRdPVwie1xuICAgICAgICBjb250ZW50czogY29udGVudHMsXG4gICAgICAgIHBsYWNlbWVudDogcGxhY2VtZW50LFxuICAgICAgICBldmVudDogZXZlbnRcbiAgICAgIH1cIlxuICAgID5cbiAgICA8L25nLXRlbXBsYXRlPlxuICBgLFxufSlcbmV4cG9ydCBjbGFzcyBDYWxlbmRhclRvb2x0aXBXaW5kb3dDb21wb25lbnQge1xuICBASW5wdXQoKSBjb250ZW50czogc3RyaW5nO1xuXG4gIEBJbnB1dCgpIHBsYWNlbWVudDogc3RyaW5nO1xuXG4gIEBJbnB1dCgpIGV2ZW50OiBDYWxlbmRhckV2ZW50O1xuXG4gIEBJbnB1dCgpIGN1c3RvbVRlbXBsYXRlOiBUZW1wbGF0ZVJlZjxhbnk+O1xufVxuXG5ARGlyZWN0aXZlKHtcbiAgc2VsZWN0b3I6ICdbbXdsQ2FsZW5kYXJUb29sdGlwXScsXG59KVxuZXhwb3J0IGNsYXNzIENhbGVuZGFyVG9vbHRpcERpcmVjdGl2ZSBpbXBsZW1lbnRzIE9uRGVzdHJveSwgT25DaGFuZ2VzIHtcbiAgQElucHV0KCdtd2xDYWxlbmRhclRvb2x0aXAnKSBjb250ZW50czogc3RyaW5nOyAvLyB0c2xpbnQ6ZGlzYWJsZS1saW5lIG5vLWlucHV0LXJlbmFtZVxuXG4gIEBJbnB1dCgndG9vbHRpcFBsYWNlbWVudCcpIHBsYWNlbWVudDogUGxhY2VtZW50QXJyYXkgPSAnYXV0byc7IC8vIHRzbGludDpkaXNhYmxlLWxpbmUgbm8taW5wdXQtcmVuYW1lXG5cbiAgQElucHV0KCd0b29sdGlwVGVtcGxhdGUnKSBjdXN0b21UZW1wbGF0ZTogVGVtcGxhdGVSZWY8YW55PjsgLy8gdHNsaW50OmRpc2FibGUtbGluZSBuby1pbnB1dC1yZW5hbWVcblxuICBASW5wdXQoJ3Rvb2x0aXBFdmVudCcpIGV2ZW50OiBDYWxlbmRhckV2ZW50OyAvLyB0c2xpbnQ6ZGlzYWJsZS1saW5lIG5vLWlucHV0LXJlbmFtZVxuXG4gIEBJbnB1dCgndG9vbHRpcEFwcGVuZFRvQm9keScpIGFwcGVuZFRvQm9keTogYm9vbGVhbjsgLy8gdHNsaW50OmRpc2FibGUtbGluZSBuby1pbnB1dC1yZW5hbWVcblxuICBASW5wdXQoJ3Rvb2x0aXBEZWxheScpIGRlbGF5OiBudW1iZXIgfCBudWxsID0gbnVsbDsgLy8gdHNsaW50OmRpc2FibGUtbGluZSBuby1pbnB1dC1yZW5hbWVcblxuICBwcml2YXRlIHRvb2x0aXBGYWN0b3J5OiBDb21wb25lbnRGYWN0b3J5PENhbGVuZGFyVG9vbHRpcFdpbmRvd0NvbXBvbmVudD47XG4gIHByaXZhdGUgdG9vbHRpcFJlZjogQ29tcG9uZW50UmVmPENhbGVuZGFyVG9vbHRpcFdpbmRvd0NvbXBvbmVudD47XG4gIHByaXZhdGUgY2FuY2VsVG9vbHRpcERlbGF5JCA9IG5ldyBTdWJqZWN0KCk7XG5cbiAgY29uc3RydWN0b3IoXG4gICAgcHJpdmF0ZSBlbGVtZW50UmVmOiBFbGVtZW50UmVmLFxuICAgIHByaXZhdGUgaW5qZWN0b3I6IEluamVjdG9yLFxuICAgIHByaXZhdGUgcmVuZGVyZXI6IFJlbmRlcmVyMixcbiAgICBjb21wb25lbnRGYWN0b3J5UmVzb2x2ZXI6IENvbXBvbmVudEZhY3RvcnlSZXNvbHZlcixcbiAgICBwcml2YXRlIHZpZXdDb250YWluZXJSZWY6IFZpZXdDb250YWluZXJSZWYsXG4gICAgQEluamVjdChET0NVTUVOVCkgcHJpdmF0ZSBkb2N1bWVudCAvL3RzbGludDpkaXNhYmxlLWxpbmVcbiAgKSB7XG4gICAgdGhpcy50b29sdGlwRmFjdG9yeSA9IGNvbXBvbmVudEZhY3RvcnlSZXNvbHZlci5yZXNvbHZlQ29tcG9uZW50RmFjdG9yeShcbiAgICAgIENhbGVuZGFyVG9vbHRpcFdpbmRvd0NvbXBvbmVudFxuICAgICk7XG4gIH1cblxuICBuZ09uQ2hhbmdlcyhjaGFuZ2VzOiBTaW1wbGVDaGFuZ2VzKTogdm9pZCB7XG4gICAgaWYgKFxuICAgICAgdGhpcy50b29sdGlwUmVmICYmXG4gICAgICAoY2hhbmdlcy5jb250ZW50cyB8fCBjaGFuZ2VzLmN1c3RvbVRlbXBsYXRlIHx8IGNoYW5nZXMuZXZlbnQpXG4gICAgKSB7XG4gICAgICB0aGlzLnRvb2x0aXBSZWYuaW5zdGFuY2UuY29udGVudHMgPSB0aGlzLmNvbnRlbnRzO1xuICAgICAgdGhpcy50b29sdGlwUmVmLmluc3RhbmNlLmN1c3RvbVRlbXBsYXRlID0gdGhpcy5jdXN0b21UZW1wbGF0ZTtcbiAgICAgIHRoaXMudG9vbHRpcFJlZi5pbnN0YW5jZS5ldmVudCA9IHRoaXMuZXZlbnQ7XG4gICAgICB0aGlzLnRvb2x0aXBSZWYuY2hhbmdlRGV0ZWN0b3JSZWYubWFya0ZvckNoZWNrKCk7XG5cbiAgICAgIGlmICghdGhpcy5jb250ZW50cykge1xuICAgICAgICB0aGlzLmhpZGUoKTtcbiAgICAgIH1cbiAgICB9XG4gIH1cblxuICBuZ09uRGVzdHJveSgpOiB2b2lkIHtcbiAgICB0aGlzLmhpZGUoKTtcbiAgfVxuXG4gIEBIb3N0TGlzdGVuZXIoJ21vdXNlZW50ZXInKVxuICBvbk1vdXNlT3ZlcigpOiB2b2lkIHtcbiAgICBjb25zdCBkZWxheSQ6IE9ic2VydmFibGU8YW55PiA9XG4gICAgICB0aGlzLmRlbGF5ID09PSBudWxsID8gb2YoJ25vdycpIDogdGltZXIodGhpcy5kZWxheSk7XG4gICAgZGVsYXkkLnBpcGUodGFrZVVudGlsKHRoaXMuY2FuY2VsVG9vbHRpcERlbGF5JCkpLnN1YnNjcmliZSgoKSA9PiB7XG4gICAgICB0aGlzLnNob3coKTtcbiAgICB9KTtcbiAgfVxuXG4gIEBIb3N0TGlzdGVuZXIoJ21vdXNlbGVhdmUnKVxuICBvbk1vdXNlT3V0KCk6IHZvaWQge1xuICAgIHRoaXMuaGlkZSgpO1xuICB9XG5cbiAgcHJpdmF0ZSBzaG93KCk6IHZvaWQge1xuICAgIGlmICghdGhpcy50b29sdGlwUmVmICYmIHRoaXMuY29udGVudHMpIHtcbiAgICAgIHRoaXMudG9vbHRpcFJlZiA9IHRoaXMudmlld0NvbnRhaW5lclJlZi5jcmVhdGVDb21wb25lbnQoXG4gICAgICAgIHRoaXMudG9vbHRpcEZhY3RvcnksXG4gICAgICAgIDAsXG4gICAgICAgIHRoaXMuaW5qZWN0b3IsXG4gICAgICAgIFtdXG4gICAgICApO1xuICAgICAgdGhpcy50b29sdGlwUmVmLmluc3RhbmNlLmNvbnRlbnRzID0gdGhpcy5jb250ZW50cztcbiAgICAgIHRoaXMudG9vbHRpcFJlZi5pbnN0YW5jZS5jdXN0b21UZW1wbGF0ZSA9IHRoaXMuY3VzdG9tVGVtcGxhdGU7XG4gICAgICB0aGlzLnRvb2x0aXBSZWYuaW5zdGFuY2UuZXZlbnQgPSB0aGlzLmV2ZW50O1xuICAgICAgaWYgKHRoaXMuYXBwZW5kVG9Cb2R5KSB7XG4gICAgICAgIHRoaXMuZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZCh0aGlzLnRvb2x0aXBSZWYubG9jYXRpb24ubmF0aXZlRWxlbWVudCk7XG4gICAgICB9XG4gICAgICByZXF1ZXN0QW5pbWF0aW9uRnJhbWUoKCkgPT4ge1xuICAgICAgICB0aGlzLnBvc2l0aW9uVG9vbHRpcCgpO1xuICAgICAgfSk7XG4gICAgfVxuICB9XG5cbiAgcHJpdmF0ZSBoaWRlKCk6IHZvaWQge1xuICAgIGlmICh0aGlzLnRvb2x0aXBSZWYpIHtcbiAgICAgIHRoaXMudmlld0NvbnRhaW5lclJlZi5yZW1vdmUoXG4gICAgICAgIHRoaXMudmlld0NvbnRhaW5lclJlZi5pbmRleE9mKHRoaXMudG9vbHRpcFJlZi5ob3N0VmlldylcbiAgICAgICk7XG4gICAgICB0aGlzLnRvb2x0aXBSZWYgPSBudWxsO1xuICAgIH1cbiAgICB0aGlzLmNhbmNlbFRvb2x0aXBEZWxheSQubmV4dCgpO1xuICB9XG5cbiAgcHJpdmF0ZSBwb3NpdGlvblRvb2x0aXAocHJldmlvdXNQb3NpdGlvbnM6IHN0cmluZ1tdID0gW10pOiB2b2lkIHtcbiAgICBpZiAodGhpcy50b29sdGlwUmVmKSB7XG4gICAgICB0aGlzLnRvb2x0aXBSZWYuY2hhbmdlRGV0ZWN0b3JSZWYuZGV0ZWN0Q2hhbmdlcygpO1xuICAgICAgdGhpcy50b29sdGlwUmVmLmluc3RhbmNlLnBsYWNlbWVudCA9IHBvc2l0aW9uRWxlbWVudHMoXG4gICAgICAgIHRoaXMuZWxlbWVudFJlZi5uYXRpdmVFbGVtZW50LFxuICAgICAgICB0aGlzLnRvb2x0aXBSZWYubG9jYXRpb24ubmF0aXZlRWxlbWVudC5jaGlsZHJlblswXSxcbiAgICAgICAgdGhpcy5wbGFjZW1lbnQsXG4gICAgICAgIHRoaXMuYXBwZW5kVG9Cb2R5XG4gICAgICApO1xuICAgICAgLy8ga2VlcCByZS1wb3NpdGlvbmluZyB0aGUgdG9vbHRpcCB1bnRpbCB0aGUgYXJyb3cgcG9zaXRpb24gZG9lc24ndCBtYWtlIGEgZGlmZmVyZW5jZVxuICAgICAgaWYgKFxuICAgICAgICBwcmV2aW91c1Bvc2l0aW9ucy5pbmRleE9mKHRoaXMudG9vbHRpcFJlZi5pbnN0YW5jZS5wbGFjZW1lbnQpID09PSAtMVxuICAgICAgKSB7XG4gICAgICAgIHRoaXMucG9zaXRpb25Ub29sdGlwKFtcbiAgICAgICAgICAuLi5wcmV2aW91c1Bvc2l0aW9ucyxcbiAgICAgICAgICB0aGlzLnRvb2x0aXBSZWYuaW5zdGFuY2UucGxhY2VtZW50LFxuICAgICAgICBdKTtcbiAgICAgIH1cbiAgICB9XG4gIH1cbn1cbiJdfQ==

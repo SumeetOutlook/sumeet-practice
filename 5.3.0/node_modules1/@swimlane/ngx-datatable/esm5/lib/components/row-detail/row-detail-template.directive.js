@@ -1,0 +1,23 @@
+import { __decorate } from "tslib";
+import { Directive, TemplateRef } from '@angular/core';
+import * as ɵngcc0 from '@angular/core';
+var DatatableRowDetailTemplateDirective = /** @class */ (function () {
+    function DatatableRowDetailTemplateDirective(template) {
+        this.template = template;
+    }
+    DatatableRowDetailTemplateDirective.ctorParameters = function () { return [
+        { type: TemplateRef }
+    ]; };
+DatatableRowDetailTemplateDirective.ɵfac = function DatatableRowDetailTemplateDirective_Factory(t) { return new (t || DatatableRowDetailTemplateDirective)(ɵngcc0.ɵɵdirectiveInject(ɵngcc0.TemplateRef)); };
+DatatableRowDetailTemplateDirective.ɵdir = ɵngcc0.ɵɵdefineDirective({ type: DatatableRowDetailTemplateDirective, selectors: [["", "ngx-datatable-row-detail-template", ""]] });
+/*@__PURE__*/ (function () { ɵngcc0.ɵsetClassMetadata(DatatableRowDetailTemplateDirective, [{
+        type: Directive,
+        args: [{
+                selector: '[ngx-datatable-row-detail-template]'
+            }]
+    }], function () { return [{ type: ɵngcc0.TemplateRef }]; }, null); })();
+    return DatatableRowDetailTemplateDirective;
+}());
+export { DatatableRowDetailTemplateDirective };
+
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicm93LWRldGFpbC10ZW1wbGF0ZS5kaXJlY3RpdmUuanMiLCJzb3VyY2VzIjpbIm5nOi9Ac3dpbWxhbmUvbmd4LWRhdGF0YWJsZS9saWIvY29tcG9uZW50cy9yb3ctZGV0YWlsL3Jvdy1kZXRhaWwtdGVtcGxhdGUuZGlyZWN0aXZlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLFdBQVcsRUFBRSxNQUFNLGVBQWUsQ0FBQzs7QUFLdkQ7QUFDb0IsSUFBbEIsNkNBQW1CLFFBQTBCO0FBQUksUUFBOUIsYUFBUSxHQUFSLFFBQVEsQ0FBa0I7QUFBQyxJQUFFLENBQUM7QUFDbkQ7QUFDOEUsZ0JBRi9DLFdBQVc7QUFBRztJQURoQyxtQ0FBbUMsd0JBSC9DLFNBQVMsQ0FBQyxjQUNULFFBQVEsRUFBRSxxQ0FBcUMsVUFDaEQsQ0FBQyxRQUNXLG1DQUFtQyxDQUUvQzs7Ozs7Ozs0RUFDRDtBQUFDLElBREQsMENBQUM7QUFDQSxDQURBLEFBRkQsSUFFQztBQUNELFNBSGEsbUNBQW1DO0FBQy9DIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRGlyZWN0aXZlLCBUZW1wbGF0ZVJlZiB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuXG5ARGlyZWN0aXZlKHtcbiAgc2VsZWN0b3I6ICdbbmd4LWRhdGF0YWJsZS1yb3ctZGV0YWlsLXRlbXBsYXRlXSdcbn0pXG5leHBvcnQgY2xhc3MgRGF0YXRhYmxlUm93RGV0YWlsVGVtcGxhdGVEaXJlY3RpdmUge1xuICBjb25zdHJ1Y3RvcihwdWJsaWMgdGVtcGxhdGU6IFRlbXBsYXRlUmVmPGFueT4pIHt9XG59XG4iXX0=

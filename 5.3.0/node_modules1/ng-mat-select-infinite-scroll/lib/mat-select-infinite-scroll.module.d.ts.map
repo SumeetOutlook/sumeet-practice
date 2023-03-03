@@ -1,0 +1,1 @@
+{"version":3,"file":"mat-select-infinite-scroll.module.d.ts","sources":["mat-select-infinite-scroll.module.d.ts"],"names":[],"mappings":";;;AAAA;;;AACA","sourcesContent":["export declare class MatSelectInfiniteScrollModule {\n}\n"]}
